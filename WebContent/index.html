@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box1
+        {
+            border-radius: 10px;
+            border: 2px solid blue;
+            background-color: cadetblue;
+            padding: 10px;
+            margin : 10px;
+            height : 20px;
+            width : 400px;
+            color : white;
+            text-align: center;
+        }
+        .box2
+        {
+            padding : 10px;
+            margin : 10px;
+            width:400px;
+        }
+
+        .box3
+        {
+            border : 1px solid black;
+            width : 100%;
+            height : 40px;
+            display: inline-block;
+            padding : 5px 40px;
+            box-sizing: border-box;
+        }
+        input[type=text], input[type=password]
+        {
+            width:100%;
+            height:30px;
+            border:1px solid brown;
+            box-sizing: border-box;
+            padding: 5px;
+        }
+
+        input[type=submit], input[type=reset]
+        {
+            background-color: burlywood;
+            width:45%;
+            border: none;
+            padding : 10px;
+            margin:5px;
+            color:darkblue;
+        }
+        textarea
+        {
+            width:100%;
+            height:80px;
+        }
+        #txt_email
+        {
+            width:60%;
+            height:30px;
+        }
+        #txt_h1, #txt_h2, #txt_h3
+        {
+            width:25%;
+            height:30px;
+        }
+        p{
+            font-size: smaller;
+            font-weight: bold;
+        }
+        label{
+            color:blue;
+        }
+    </style>
+    <script>
+/*요구사항분석
+
+저희는 곤충을 판매하는 온라인업체입니다.
+회원제로 운영하고 있습니다.
+회원의 
+아이디는 8글자에서 10글자 사이이며 소문자, 
+숫자의 조합입니다.
+비밀번호는 소문자, 숫자의 조합으로 8글자 입니다.
+
+회원가입시 비밀번호 확인을 하도록 해 주시고,
+비밀번호 확인을 하지 않을 경우 경고창이 나오도록 
+해 주세요.
+이메일은 필요하지 않습니다.
+연락처는 반드시 기입하도록 해 주세요.
+미성년자와 성인을 구분하여 회원을 관리하고 있으니
+회원가입시 둘 중에 하나를 선택하게 해 주세요.
+마지막으로
+자유형식으로 관심있는 곤충이나 기르고 있는 곤충이 
+있는지를
+간단히 적는 칸을 만들어 주시면 됩니다.
+감사합니다. 
+*/
+    </script>
+    <script>
+        function formchk(){
+            let id = form1.txt_id.value;
+            let returnID = chkString("id", id);           
+            if(returnID < 4){
+                form1.txt_id.focus();
+                return;
+            }
+            let pwd1 = form1.txt_pwd.value;
+            let pwd2 = form1.txt_pwdc.value;
+            if(pwd1 != pwd2){
+                alert("비빌번호와 비밀번호 확인이 서로 다릅니다.");
+                form1.txt_pwd.focus();
+                return;
+            }
+            let returnpwd = chkString("비밀번호", pwd1); 
+            if(returnID < 4){
+                form1.txt_id.focus();
+                return;
+            }else{
+                form1.pwd_chk.value=2;
+            }
+            if(form1.pwd_chk.value==2){
+                alert("비밀번호 확인함 ");
+            }
+
+            let telAddress = form1.txt_h1.value+"-"+form1.txt_h2.value+"-"+form1.txt_h3.value;
+            if(telAddress.length < 13){
+                alert("전화번호를 필수 입니다. 확인해 주세요");
+                form1.txt_h1.focus();
+                return;
+            }
+
+            let adultChk = form1.who_g.value;
+            let usermsg = form1.text_intro.value;
+
+            alert(adultChk);
+            alert(usermsg);
+
+        }
+        function chkString(type, nowString){
+            let resultString = stringchk(nowString);            
+            if(resultString == 1){
+                alert(type + " 8-10글자 입니다.");
+            }else if(resultString == 2){
+                alert("특수문자는 하나이상 포함되어야 합니다.");
+            }else if(resultString == 3){
+                alert("알파벳 소문자만 사용가능합니다.");
+            }
+            return resultString;
+        }
+        function stringchk(nowString){
+
+            if(!(nowString.length >=8 && nowString.length <=10)){
+                return 1;    // 글자수 틀림
+            }
+// abdd!!AA
+            let signCnt=0;
+            let signString = "!@#$%^&*";
+            for(i=0; i < nowString.length; i++){
+                if(signString.indexOf(nowString.charAt(i)) != -1){
+                    signCnt++;
+                    break;
+                }               
+            }
+            if(signCnt == 0){
+                return 2;  // 특수문자 포함 안됨.
+            }
+              // abdd!!AA
+            for(i=0; i < nowString.length; i++){
+                let asciiNum = nowString.charCodeAt(i);
+                if(asciiNum < 97 || asciiNum > 121){  //97-121까지 소문자
+                    if(asciiNum < 48 || asciiNum > 57){  // 49-56까지 숫자 숫자가 아닐 경우
+                        let chksign = String.fromCharCode(asciiNum);
+                        if(signString.indexOf(chksign) == -1){
+                           return 3;   // 소문자 아닌 것이 있음.
+                        }
+                    }
+                }                 
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="box1">   <!--  id는 유니크하다, class는 여러개 사용할 수 있다.-->
+        회원가입
+    </div>
+    <form name="form1" method="get" action="">     
+
+        <div class="box2">  
+            <p> 
+                <label for="txt_id">아이디</label>  <!-- 라벨이 연결된(for) 라벨만 클릭해서 연결된 창이 활성화-->
+                <input type="text" name="txt_id" id="txt_id" placeholder="아이디를 입력">
+            </p>
+            <p>
+                <label for="txt_name">이름</label>
+                <input type="text" name="txt_name" id="txt_name" placeholder="이름 입력">
+            </p>
+            <p>
+                <label for="txt_pwd">비밀번호</label>
+                <input type="password" name="txt_pwd" id="txt_pwd" placeholder="비밀번호입력">
+            </p>
+            <p>
+                <label for="txt_pwdc">비밀번호확인</label>
+                <input type="password" name="txt_pwdc" id="txt_pwdc" placeholder="비밀번호입력">
+                <input type="hidden" name="pwd_chk" value="1"></input>
+            </p>
+            <p>
+                <label for="txt_email">이메일 </label>
+                <input type="text" name="txt_email" id="txt_email" placeholder="이메일입력">
+                <input type="checkbox" name="ck_recv"> 
+                <label for="ck_recv">수신희망</label>
+            </p>
+            <p>
+                <label for="txt_h1">연락처 </label>
+                <select name="txt_h1" id="txt_h1">
+                    <option value="010" selected>010</option>
+                    <option value="011">011</option>
+
+                </select>
+                <input type="text" name="txt_h2" id="txt_h2">
+                <input type="text" name="txt_h2" id="txt_h2">
+                <!--   id 는 유니크 
+                    let a = getelementByID("txt_h2_id");  //a는 단일값
+                    let b = getElementsByName("txt_h2");  //b는 배열
+                    alert(b[0].value);  // 전화번호 두번째 자리를 의미
+                    alert(b[1].value);  // 전화번호 세번째 자리를 의미
+                -->
+            </p>
+            <p>
+                <label>성인</label>
+                <sapn class="box3">
+                    <lable for="gender_m">미성년자</lable>
+                    <input type="radio" name="who_g" id="gender_m" checked value="no_a">
+                    <lable for="gender_w">성인</lable>
+                    <input type="radio" name="who_g" id="gender_w" value="a">
+                </sapn>
+            </p>
+            <p>
+                <label for="txt_hob">관심사 </label>
+                <input type="checkbox" name="ck_recv" id="h1"> 
+                <label for="h1">스포츠</label>
+                <input type="checkbox" name="ck_recv" id="h2"> 
+                <label for="h2">영화</label>
+                <input type="checkbox" name="ck_recv" id="h3"> 
+                <label for="h3">음식</label>
+            </p>
+            <p>
+                <label for="txt_intro">자기소개</label>
+                <textarea name="text_intro" id="txt_intro"></textarea>
+
+            </p>
+            <p>
+                <input type="button" value="신청" onclick="formchk();">
+                <input type="reset" value="초기화">
+                <input type="button" value="버튼예제">
+            </p>
+        </div>
+    </form>
+    
+</body>
+</html>
